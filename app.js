@@ -1,9 +1,11 @@
 const express = require('express');
 const ejs = require('ejs');
 const router = require("./routes/pages");
+require('dotenv').config();
+
+const PORT = process.env.PORT || 8000;
 
 const app = express();
-const PORT = 3000;
 
 //==================================
 // //setting the view engine
@@ -46,30 +48,44 @@ const PORT = 3000;
 
 //=======================
 
-//=====QUERY parameters
-app.get('/', (req, res) => {
-    const id = req.query.id;
-    const username = req.query.username;
+//=====QUERY and PATH parameters sample============
+// app.get('/', (req, res) => {
+//     const id = req.query.id;
+//     const username = req.query.username;
 
-    res.send(`User ID = ${id}, Username = ${username}`);
-});
+//     res.send(`User ID = ${id}, Username = ${username}`);
+// });
 
-app.get('/products/:id', (req,res) => {
-    const productId = req.params.id;
+// app.get('/products/:id', (req,res) => {
+//     const productId = req.params.id;
 
-    const products = [
-        {"id" : 1, "name" : "Product A"},
-        {"id" : 2, "name" : "Product B"},
-        {"id" : 3, "name" : "Product C"}
-    ]
+//     const products = [
+//         {"id" : 1, "name" : "Product A"},
+//         {"id" : 2, "name" : "Product B"},
+//         {"id" : 3, "name" : "Product C"}
+//     ]
 
-    const product = products.find( product => product.id == parseInt(productId));
+//     const product = products.find( product => product.id == parseInt(productId));
 
-    res.send(`Product Id = ${product.id}, Product name = ${product.name}`);
+//     res.send(`Product Id = ${product.id}, Product name = ${product.name}`);
+// })
+
+// app.listen(PORT, () => {
+//     console.log(`Server started on port ${PORT}`);
+// });
+
+//==================================================
+
+//==================================================
+app.use(express.static('public'));
+
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+app.get('/', (req,res) => {
+    res.render('home');
 })
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
-
-//======================
